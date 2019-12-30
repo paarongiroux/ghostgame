@@ -7,8 +7,8 @@
  Info:
    Section       : 
    Bank          : 0
-   Map size      : 40 x 36
-   Tile set      : C:\users\aarongiroux\Desktop\brick.gbr
+   Map size      : 80 x 26
+   Tile set      : C:\users\aarongiroux\Desktop\backgroundtiles.gbr
    Plane count   : 1 plane (8 bits)
    Plane order   : Tiles are continues
    Tile offset   : 0
@@ -18,8 +18,8 @@
 
 */
 
-#define backgroundmapWidth 40
-#define backgroundmapHeight 36
+#define backgroundmapWidth 80
+#define backgroundmapHeight 26
 #define backgroundmapBank 0
 
 extern unsigned char backgroundmap[];

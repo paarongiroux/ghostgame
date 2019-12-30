@@ -3,6 +3,8 @@
 #include <Sprites.c>
 #include <bgtiles.c>
 #include <bg.c>
+#include <GhostsSplash_data.c>
+#include <GhostsSplash_map.c>
 
 
 void performantdelay(UINT8 numloops){
@@ -27,7 +29,7 @@ void main()
   UINT8 grav = 2;
 
   // floor y position constant.
-  UINT8 floor = 120;
+  UINT8 floor = 136;
 
   // player x
   UINT8 x = 80;
@@ -44,25 +46,38 @@ void main()
   // projectile y
   UINT8 py = 100;
 
-  // boolean. 1 if player is moving right.
+  // boolean. 1 if player is moving.
   UINT8 moving = 0;
 
+  // boolean true if player is crouched.
   UINT8 crouched = 0;
 
+  // boolean tru if player is facing right.
   UINT8 facingRight = 1;
 
-  int spritecount1 = 0;
-  int spritecount2 = 0;
+  // use to help with delay for sprite changing
+  UINT8 spritecount1 = 0;
+
+  // boolean true if projectile is moving to the right.
+  UINT8 projRight = 1;
 
 
-  // sets background tile data from bgtiles label.
-  set_bkg_data(0, 7, bgtiles);
-
-  // sets background map data from backgroundmap label.
-  set_bkg_tiles(0, 0, 40, 18, backgroundmap);
+  set_bkg_data(0, 500, GhostsSplash_data);
+  set_bkg_tiles(0, 0, 20, 18, GhostsSplash_map);
 
   SHOW_BKG;
   DISPLAY_ON;
+
+  waitpad(J_START);
+
+  // sets background tile data from bgtiles label.
+  set_bkg_data(0, 19, bgtiles);
+
+  // sets background map data from backgroundmap label.
+  set_bkg_tiles(0, 0, 80, 26, backgroundmap);
+
+  // SHOW_BKG;
+  // DISPLAY_ON;
 
   // loads sprite data, sets tiles for sprite 0 and 1.
   // puts sprites 0 and 1 on screen.
@@ -135,6 +150,8 @@ void main()
       move_sprite(1, x, y);
       px = x;
       py = y;
+
+      projRight = facingRight;
     }
     if (joypad() & J_B)
     {
@@ -173,11 +190,20 @@ void main()
     }
 
     // if projectile is on screen, keep scrolling.
-    if (px < 200)
+    if ((projRight && px < 200) || (!projRight && px > 0))
     {
-      scroll_sprite(1,5,0);
       set_sprite_tile(1, 4 + currentSpriteIndex);
-      px += 5;
+      if (projRight)
+      {
+        scroll_sprite(1,5,0);
+        px += 5;
+      }
+      else
+      {
+        scroll_sprite(1,-5,0);
+        px -= 5;
+      }
+
     }
 
     if (spritecount1 > 4)
