@@ -3,64 +3,46 @@
 #include <Sprites.c>
 #include <bgtiles.c>
 #include <bg.c>
+#include <structs.h>
+#include <structs.c>
 #include <GhostsSplash_data.c>
 #include <GhostsSplash_map.c>
 
 
-void performantdelay(UINT8 numloops){
-    UINT8 i;
-    for(i = 0; i < numloops; i++){
-        wait_vbl_done();
-    }
-}
-
 void main()
 {
+  Entity player = {
+	  PLAYER_X_START,	// xLoc
+	  PLAYER_Y_START,	// yLoc
+	  0,				// xSpeed
+	  0,				// ySpeed
+	  3,				// numberSprites
+	  False,			// isMoving
+	  False,			// isCrouched
+	  True,				// facingRight
+	  True				// inAir
+  };
+  Projectile projectile = {
+	  player.xLoc,		// xLoc
+	  player.yLoc,		// yLoc
+	  player.facingRight,//facingRight
+	  4					// numberSprites
+  };
+
   // used for swapping sprites.
   UINT8 currentSpriteIndex = 0;
 
-  // boolean. 1 if player is in the air.
-  UINT8 inAir = 0;
-
-  // holds player's yspeed. used for jumping/falling.
-  UINT8 yspeed = 0;
-
-  // gravity constant.
-  UINT8 grav = 2;
-
-  // floor y position constant.
-  UINT8 floor = 136;
-
-  // player x
-  UINT8 x = 80;
-
-  // player y
-  UINT8 y = 70;
 
   // projected y. used for collision detection.
-  UINT8 projy = y;
+  UINT8 projy = player.yLoc;
 
-  // projectile x
-  UINT8 px = 100;
+
 
   // projectile y
   UINT8 py = 100;
 
-  // boolean. 1 if player is moving.
-  UINT8 moving = 0;
-
-  // boolean true if player is crouched.
-  UINT8 crouched = 0;
-
-  // boolean tru if player is facing right.
-  UINT8 facingRight = 1;
-
   // use to help with delay for sprite changing
   UINT8 spritecount1 = 0;
-
-  // boolean true if projectile is moving to the right.
-  UINT8 projRight = 1;
-
 
   set_bkg_data(0, 500, GhostsSplash_data);
   set_bkg_tiles(0, 0, 20, 18, GhostsSplash_map);
@@ -82,10 +64,10 @@ void main()
   // loads sprite data, sets tiles for sprite 0 and 1.
   // puts sprites 0 and 1 on screen.
   set_sprite_data(0,7,Sprites);
-  set_sprite_tile(0,0);
-  set_sprite_tile(1,4);
-  move_sprite(0,x,y);
-  move_sprite(1,px,py);
+  set_sprite_tile(0,PLAYER_SPRITES);
+  set_sprite_tile(1,PROJECTILE_SPRITES);
+  move_sprite(0,player.xLoc, player.yLoc);
+  move_sprite(1,projectile.xLoc,projectile.yLoc);
   SHOW_SPRITES;
 
 
@@ -96,112 +78,115 @@ void main()
     // joypad input functions
     if (joypad() & J_LEFT)
     {
-      if (x > 50)
+      if (player.xLoc > 50)
       {
         scroll_sprite(0,-5,0);
-        x -= 5;
+        player.xLoc -= 5;
       }
       else
       {
         scroll_bkg(-5,0);
       }
-      moving = 1;
-      set_sprite_tile(0,3 - currentSpriteIndex);
-      if (facingRight)
+      player.isMoving = True;
+      set_sprite_tile(0, player.numberSprites - currentSpriteIndex);
+      if (player.facingRight)
       {
-        facingRight = 0;
+        player.facingRight = False;
         set_sprite_prop(0,S_FLIPX);
       }
 
     }
     if (joypad() & J_RIGHT)
     {
-      if (x < 80) {
+      if (player.xLoc < 80) {
         scroll_sprite(0,5,0);
-        x += 5;
+        player.xLoc += 5;
       }
       else
       {
         scroll_bkg(5,0);
       }
-      moving = 1;
-      set_sprite_tile(0,3 - currentSpriteIndex);
+      player.isMoving = True;
+      set_sprite_tile(0, player.numberSprites - currentSpriteIndex);
 
-      if (!facingRight)
+      if (!player.facingRight)
       {
-        facingRight = 1;
+        player.facingRight = True;
         set_sprite_prop(0,get_sprite_prop(0) & ~S_FLIPX);
       }
     }
     if (joypad() & J_UP)
     {
       scroll_sprite(0,0,-3);
-      y -= 3;
+      player.yLoc -= 3;
     }
     if (joypad() & J_DOWN)
     {
-      crouched = 1;
-      set_sprite_tile(0,6);
+      player.isCrouched = True;
+      set_sprite_tile(0, CROUCHING_SPRITE);
       scroll_sprite(0,0,3);
-      y += 3;
+      player.yLoc += 3;
     }
-    if (joypad() & J_A)
-    {
-      move_sprite(1, x, y);
-      px = x;
-      py = y;
 
-      projRight = facingRight;
-    }
+	//jump
     if (joypad() & J_B)
     {
-      if (inAir == 0)
+      if (!player.inAir)
       {
-        inAir = 1;
-        yspeed = -12;
-        projy = y + yspeed;
+        player.inAir = True;
+        player.ySpeed = -12;
+        projy = player.yLoc + player.ySpeed;
       }
     }
 
+	//projectile
+	if (joypad() & J_A)
+	{
+	  move_sprite(1, player.xLoc, player.yLoc);
+	  projectile.xLoc = player.xLoc;
+	  projectile.yLoc = player.yLoc;
+
+	  projectile.facingRight = player.facingRight;
+	}
+
     // calculate projected y.
-    projy = y + yspeed;
+    projy = player.yLoc + player.ySpeed;
 
     // if next loop isn't under floor, keep falling.
-    if (projy < floor)
+    if (projy < GLOBAL_FLOOR)
     {
-      y = projy;
-      scroll_sprite(0,0,yspeed);
-      yspeed += grav;
+      player.yLoc = projy;
+      scroll_sprite(0,0,player.ySpeed);
+      player.ySpeed += GRAVITY;
     }
-    // if next loop iter goes thru floor, snap to floor now.
-    if (projy >= floor)
+
+    else
     {
-      y = floor;
-      projy = y;
-      yspeed = 0;
-      move_sprite(0,x,y);
-      inAir = 0;
+      player.yLoc = GLOBAL_FLOOR;
+	  player.ySpeed = 0;
+      move_sprite(0,player.xLoc, player.yLoc);
+      player.inAir = False;
     }
 
     // if player isn't moving right, set to neutral tile.
-    if (!moving && !crouched)
+    if (!player.isMoving && !player.isCrouched)
     {
       set_sprite_tile(0, currentSpriteIndex);
     }
 
     // if projectile is on screen, keep scrolling.
-    if ((projRight && px < 200) || (!projRight && px > 0))
+    if ((projectile.facingRight && projectile.xLoc < 200) || (!projectile.facingRight && projectile.xLoc > 0))
     {
-      set_sprite_tile(1, 4 + currentSpriteIndex);
-      if (projRight)
+      set_sprite_tile(1, projectile.numberSprites + currentSpriteIndex);
+      if (projectile.facingRight)
       {
-        scroll_sprite(1,5,0);
-        px += 5;
+        scroll_sprite(1, PROJECTILE_SPEED, 0);
+        projectile.xLoc += 5;
       }
       else
       {
-        scroll_sprite(1,-5,0);
-        px -= 5;
+        scroll_sprite(1 ,-1 * PROJECTILE_SPEED, 0);
+        projectile.xLoc -= 5;
       }
 
     }
@@ -220,8 +205,8 @@ void main()
     }
 
     // set moveright to false before each iter
-    moving = 0;
-    crouched = 0;
+    player.isMoving = False;
+    player.isCrouched = False;
     performantdelay(4);
     spritecount1 +=1;
   }
