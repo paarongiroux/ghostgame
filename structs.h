@@ -40,4 +40,8 @@ typedef struct
 
 void performantdelay(UINT8 numloops);
 
+void playJumpSound();
+
+void playFireSound();
+
 #endif

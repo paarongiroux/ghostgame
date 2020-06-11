@@ -167,11 +167,7 @@ void main()
 	  // make sure player is not in air (no double jumps)
       if (!player.inAir)
       {
-        NR10_REG = 0x16; 
-        NR11_REG = 0x40;
-        NR12_REG = 0x73;  
-        NR13_REG = 0x00;   
-        NR14_REG = 0xC3;
+        playJumpSound();
 		// set inAir flag and initial jump speed
         player.inAir = True;
         player.ySpeed = JUMP_SPEED;
@@ -184,6 +180,7 @@ void main()
 	// case: A button (projectile) ====================
 	if (joypad() & J_A)
 	{
+    playFireSound();
 	  // move projectile sprite to the players location & direction.
 	  move_sprite(1, player.xLoc, player.yLoc);
 	  projectile.xLoc = player.xLoc;
