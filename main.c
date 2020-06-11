@@ -7,10 +7,12 @@
 #include <structs.c>
 #include <GhostsSplash_data.c>
 #include <GhostsSplash_map.c>
+#include <stdio.h>
 
 
 void main()
 {
+
   // stores all data associated with the player
   Entity player = {
 	  PLAYER_X_START,	// xLoc
@@ -60,7 +62,7 @@ void main()
   set_bkg_data(0, 19, bgtiles);
 
   // sets background map data from backgroundmap label.
-  set_bkg_tiles(0, 0, 80, 26, backgroundmap);
+  set_bkg_tiles(0, 0, 40, 18, backgroundmap);
 
   // loads sprite data, sets tiles for sprite 0 and 1.
   // puts sprites 0 and 1 on screen.
@@ -76,6 +78,10 @@ void main()
   move_sprite(1,projectile.xLoc,projectile.yLoc);
   SHOW_SPRITES;
 
+
+  NR52_REG = 0x80;
+  NR50_REG = 0x77;
+  NR51_REG = 0xFF;
 
   // MAIN GAME LOOP ===========================================================
   while(1)
@@ -139,8 +145,8 @@ void main()
 	  // if player is not in the air, pressing up will give a small bounce
 	  if (!player.inAir)
 	  {
-      	scroll_sprite(0,0,-3);
-      	player.yLoc -= 3;
+      scroll_sprite(0,0,-3);
+      player.yLoc -= 3;
 	  }
     }
 	// case: Down D-Pad ================
@@ -161,6 +167,11 @@ void main()
 	  // make sure player is not in air (no double jumps)
       if (!player.inAir)
       {
+        NR10_REG = 0x16; 
+        NR11_REG = 0x40;
+        NR12_REG = 0x73;  
+        NR13_REG = 0x00;   
+        NR14_REG = 0xC3;
 		// set inAir flag and initial jump speed
         player.inAir = True;
         player.ySpeed = JUMP_SPEED;

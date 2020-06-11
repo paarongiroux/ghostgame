@@ -7,8 +7,8 @@
  Info:
    Section       : 
    Bank          : 0
-   Map size      : 80 x 26
-   Tile set      : C:\users\aarongiroux\Desktop\backgroundtiles.gbr
+   Map size      : 40 x 18
+   Tile set      : C:\users\aarongiroux\Desktop\gameboy\ghost\backgroundtiles.gbr
    Plane count   : 1 plane (8 bits)
    Plane order   : Tiles are continues
    Tile offset   : 0
@@ -18,8 +18,8 @@
 
 */
 
-#define backgroundmapWidth 80
-#define backgroundmapHeight 26
+#define backgroundmapWidth 40
+#define backgroundmapHeight 18
 #define backgroundmapBank 0
 
 extern unsigned char backgroundmap[];
