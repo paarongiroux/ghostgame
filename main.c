@@ -46,8 +46,8 @@ void main()
   UINT8 spritecount1 = 0;
 
   // sets initial background splash screen.
-  set_bkg_data(0, 500, GhostsSplash_data);
-  set_bkg_tiles(0, 0, 20, 18, GhostsSplash_map);
+  set_bkg_data(0, 189, GhostsSplash_data);
+  set_bkg_tiles(1, 0, 18, 18, GhostsSplash_map);
 
   // show background, set display to on.
   SHOW_BKG;
