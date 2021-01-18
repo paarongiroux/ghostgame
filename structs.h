@@ -10,6 +10,8 @@ extern const UINT8 CROUCHING_SPRITE;
 extern const UINT8 GLOBAL_FLOOR;
 extern const UINT8 PROJECTILE_SPEED;
 extern const UINT8 JUMP_SPEED;
+extern const UINT8 SOUL_DROP_SPEED;
+extern const UINT8 NUM_SOULS;
 
 typedef enum
 {
@@ -37,6 +39,13 @@ typedef struct
 	Boolean facingRight;
 	UINT8 numberSprites;
 } Projectile;
+
+typedef struct Soul
+{
+	UINT8 xLoc;
+	UINT8 yLoc;
+} Soul;
+
 
 void performantdelay(UINT8 numloops);
 

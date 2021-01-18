@@ -8,6 +8,7 @@
 #include <GhostsSplash_data.c>
 #include <GhostsSplash_map.c>
 #include <stdio.h>
+#include <stdlib.h>
 
 
 void main()
@@ -34,18 +35,47 @@ void main()
 	  4					// numberSprites
   };
 
+  // Souls data
+  Soul soul1 = {
+    16,
+    10
+  };
+  Soul soul2 = {
+    48,
+    10
+  };
+  Soul soul3 = {
+    80,
+    10
+  };
+  Soul soul4 = {
+    112,
+    10
+  };
+  Soul soul5 = {
+    144,
+    10
+  };
+
+  // tracks for gameOver
+  Boolean gameOver = False;
+
   // used for swapping sprites.
   UINT8 currentSpriteIndex = 0;
-
 
   // player's projected y.
   // stores player's anticipated location for the next frame.
   // used for collision detection.
   UINT8 projy = player.yLoc;
 
-
   // counter used to help with delay for sprite changing.
   UINT8 spritecount1 = 0;
+
+  // counter used to time souls initial dropping.
+  UINT8 soulInitCounter = 0;
+
+  // tracks the number of souls collected by the player.
+  UINT8 soulsCollected = 0;
 
   // sets initial background splash screen.
   set_bkg_data(0, 189, GhostsSplash_data);
@@ -62,7 +92,7 @@ void main()
   set_bkg_data(0, 19, bgtiles);
 
   // sets background map data from backgroundmap label.
-  set_bkg_tiles(0, 0, 40, 18, backgroundmap);
+  set_bkg_tiles(0, 0, 80, 26, backgroundmap);
 
   // loads sprite data, sets tiles for sprite 0 and 1.
   // puts sprites 0 and 1 on screen.
@@ -73,15 +103,43 @@ void main()
   // set sprite 1 to PROJECTILE_SPRITES index.
   set_sprite_tile(1,PROJECTILE_SPRITES);
 
+  // SPRITES 2-6 are soul sprites
+  // set sprite 2 to PLAYER_SPRITES index.
+  set_sprite_tile(2,PLAYER_SPRITES);
+  // set sprite 3 to PLAYER_SPRITES index.
+  set_sprite_tile(3,PLAYER_SPRITES);
+  // set sprite 4 to PLAYER_SPRITES index.
+  set_sprite_tile(4,PLAYER_SPRITES);
+  // set sprite 5 to PLAYER_SPRITES index.
+  set_sprite_tile(5,PLAYER_SPRITES);
+  // set sprite 6 to PLAYER_SPRITES index.
+  set_sprite_tile(6,PLAYER_SPRITES);
+  
+
   // moe sprites to their starting locations, show sprites.
   move_sprite(0,player.xLoc, player.yLoc);
-  move_sprite(1,projectile.xLoc,projectile.yLoc);
+  move_sprite(1,projectile.xLoc, projectile.yLoc);
+
+  // move soul sprites to their starting locations.
+  move_sprite(2, soul1.xLoc, soul1.yLoc);
+  move_sprite(3, soul2.xLoc, soul2.yLoc);
+  move_sprite(4, soul3.xLoc, soul3.yLoc);
+  move_sprite(5, soul4.xLoc, soul4.yLoc);
+  move_sprite(6, soul5.xLoc, soul5.yLoc);
+
   SHOW_SPRITES;
 
 
   NR52_REG = 0x80;
   NR50_REG = 0x77;
   NR51_REG = 0xFF;
+
+
+  // for (soulIndex = 0; soulIndex < NUM_SOULS; soulIndex++)
+  // {
+  //   int x = soulIndex;
+  // }
+
 
   // MAIN GAME LOOP ===========================================================
   while(1)
@@ -91,15 +149,10 @@ void main()
     if (joypad() & J_LEFT)
     {
 	  // if the player is on the far right of the screen, scroll the player.
-      if (player.xLoc > 50)
+      if (player.xLoc > 10)
       {
         scroll_sprite(0,-5,0);
         player.xLoc -= 5;
-      }
-	  // otherwise scroll the background.
-      else
-      {
-        scroll_bkg(-5,0);
       }
 	  // set movement flag, handle sprite animation.
       player.isMoving = True;
@@ -117,15 +170,10 @@ void main()
     if (joypad() & J_RIGHT)
     {
 	  // if player is on far left of the screen, scroll the player.
-      if (player.xLoc < 80)
+      if (player.xLoc < 160)
 	  {
         scroll_sprite(0,5,0);
         player.xLoc += 5;
-      }
-	  // otherwise, scroll the background
-      else
-      {
-        scroll_bkg(5,0);
       }
 	  // set movement flag, handle sprite animation.
       player.isMoving = True;
@@ -204,7 +252,7 @@ void main()
     else
     {
       player.yLoc = GLOBAL_FLOOR;
-	  player.ySpeed = 0;
+	    player.ySpeed = 0;
       move_sprite(0,player.xLoc, player.yLoc);
       player.inAir = False;
     }
@@ -248,10 +296,80 @@ void main()
       }
     }
 
+    // check collision here
+
+    // handle soul1 movement
+    if (soul1.yLoc > 160) 
+    {
+      gameOver = True;
+    }
+    else
+    {
+      soul1.yLoc += SOUL_DROP_SPEED;
+      move_sprite(2,soul1.xLoc, soul1.yLoc);
+    } 
+    // handle soul2 movement
+    if (soul2.yLoc > 160)
+    {
+      gameOver = True;
+    }
+    else
+    {
+      if (soulInitCounter > 15) 
+      {
+        soul2.yLoc += SOUL_DROP_SPEED;
+        move_sprite(3,soul2.xLoc, soul2.yLoc);
+      }
+    }
+    // handle soul3 movement
+    if (soul3.yLoc > 160)
+    {
+      gameOver = True;
+    }
+    else 
+    {
+      if (soulInitCounter > 30) 
+      {
+        soul3.yLoc += SOUL_DROP_SPEED;
+        move_sprite(4,soul3.xLoc, soul3.yLoc);
+      }
+    }
+    // handle soul4 movement
+    if (soul4.yLoc > 160)
+    {
+      gameOver = True;
+    }
+    else 
+    {
+      if (soulInitCounter > 45) 
+      {
+        soul4.yLoc += SOUL_DROP_SPEED;
+        move_sprite(5,soul4.xLoc, soul4.yLoc);
+      } 
+    }
+    // handle soul5 movement
+    if (soul5.yLoc > 160)
+    {
+      gameOver = True;
+    }
+    else 
+    {
+      if (soulInitCounter > 60) 
+      {
+        soul5.yLoc += SOUL_DROP_SPEED;
+        move_sprite(6,soul5.xLoc, soul5.yLoc);
+      }
+    }
+    
+
     // set moving and crouched flags to false before each iteration.
     player.isMoving = False;
     player.isCrouched = False;
     performantdelay(4);
     spritecount1 +=1;
+
+    if (soulInitCounter <= 60) {
+      soulInitCounter++;
+    }
   }
 }

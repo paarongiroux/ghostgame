@@ -8,7 +8,9 @@ const UINT8 PROJECTILE_SPRITES = 4;
 const UINT8 CROUCHING_SPRITE = 6;
 const UINT8 GLOBAL_FLOOR = 136;
 const UINT8 PROJECTILE_SPEED = 5;
-const UINT8 JUMP_SPEED = -12;
+const UINT8 JUMP_SPEED = -6;
+const UINT8 SOUL_DROP_SPEED = 2;
+const UINT8 NUM_SOULS = 5;
 
 void performantdelay(UINT8 numloops)
 {
