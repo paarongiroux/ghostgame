@@ -10,7 +10,10 @@ const UINT8 GLOBAL_FLOOR = 136;
 const UINT8 PROJECTILE_SPEED = 5;
 const UINT8 JUMP_SPEED = -6;
 const UINT8 SOUL_DROP_SPEED = 2;
-const UINT8 NUM_SOULS = 5;
+const UINT8 PLAYER_WIDTH = 8;
+const UINT8 PLAYER_HEIGHT = 8;
+const UINT8 SOUL_WIDTH = 8;
+const UINT8 SOUL_HEIGHT = 8;
 
 void performantdelay(UINT8 numloops)
 {
@@ -37,4 +40,23 @@ void playFireSound()
     NR13_REG = 0x0AU;
     NR14_REG = 0xC6U;
     NR51_REG = 0x11;
+}
+
+Boolean hasCollision(Soul *soul, Entity *ent)
+{
+    if ((soul->xLoc + SOUL_WIDTH >= ent->xLoc &&
+        soul->xLoc + SOUL_WIDTH <= ent->xLoc + PLAYER_WIDTH) &&
+        (soul->yLoc + SOUL_HEIGHT >= ent->yLoc &&
+        soul->yLoc + SOUL_HEIGHT <= ent->yLoc + PLAYER_HEIGHT)) 
+    {
+        return True;
+    }
+    if ((ent->xLoc + PLAYER_WIDTH >= soul->xLoc &&
+        ent->xLoc + PLAYER_WIDTH <= soul->xLoc + SOUL_WIDTH) &&
+        (ent->yLoc + PLAYER_HEIGHT >= soul->yLoc &&
+        ent->yLoc + PLAYER_HEIGHT <= soul->yLoc + SOUL_HEIGHT)) 
+    {
+        return True;
+    }
+    return False;
 }

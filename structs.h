@@ -12,6 +12,10 @@ extern const UINT8 PROJECTILE_SPEED;
 extern const UINT8 JUMP_SPEED;
 extern const UINT8 SOUL_DROP_SPEED;
 extern const UINT8 NUM_SOULS;
+extern const UINT8 PLAYER_WIDTH;
+extern const UINT8 PLAYER_HEIGHT;
+extern const UINT8 SOUL_WIDTH;
+extern const UINT8 SOUL_HEIGHT;
 
 typedef enum
 {
@@ -52,5 +56,7 @@ void performantdelay(UINT8 numloops);
 void playJumpSound();
 
 void playFireSound();
+
+Boolean hasCollision(Soul *soul, Entity *ent);
 
 #endif

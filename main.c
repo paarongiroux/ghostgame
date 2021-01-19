@@ -9,6 +9,7 @@
 #include <GhostsSplash_map.c>
 #include <stdio.h>
 #include <stdlib.h>
+#include <rand.h>
 
 
 void main()
@@ -34,6 +35,12 @@ void main()
 	  player.facingRight,//facingRight
 	  4					// numberSprites
   };
+
+  // possible xLocations for the souls to spawn
+  UINT8 soulSpawns[22] = {
+    8  , 15 , 22 , 29 , 36 , 43 , 50,
+    57 , 64 , 71 , 78 , 85 , 92 , 99,
+    106, 113, 120, 127, 134, 141, 148, 155};
 
   // Souls data
   Soul soul1 = {
@@ -148,11 +155,11 @@ void main()
 	// case: Left D-Pad ================
     if (joypad() & J_LEFT)
     {
-	  // if the player is on the far right of the screen, scroll the player.
-      if (player.xLoc > 10)
+      scroll_sprite(0,-5,0);
+      player.xLoc -= 5;
+      if (player.xLoc <= 2) 
       {
-        scroll_sprite(0,-5,0);
-        player.xLoc -= 5;
+        player.xLoc = -90;
       }
 	  // set movement flag, handle sprite animation.
       player.isMoving = True;
@@ -169,13 +176,16 @@ void main()
 	// case: Right D-Pad ================
     if (joypad() & J_RIGHT)
     {
-	  // if player is on far left of the screen, scroll the player.
-      if (player.xLoc < 160)
-	  {
-        scroll_sprite(0,5,0);
-        player.xLoc += 5;
+      scroll_sprite(0,5,0);
+      player.xLoc += 5;
+
+      // ran off left edge of screen.
+      if (player.xLoc >= 168)
+      {
+        player.xLoc = 8;
       }
-	  // set movement flag, handle sprite animation.
+      
+	    // set movement flag, handle sprite animation.
       player.isMoving = True;
       set_sprite_tile(0, player.numberSprites - currentSpriteIndex);
 
@@ -295,8 +305,33 @@ void main()
         currentSpriteIndex = 1;
       }
     }
-
+    
     // check collision here
+    if (hasCollision(&soul1, &player)) 
+    {
+      soul1.xLoc = soulSpawns[(rand() & 21)]; 
+      soul1.yLoc = 10;
+    }
+    if (hasCollision(&soul2, &player)) 
+    {
+      soul2.xLoc = soulSpawns[(rand() & 21)]; 
+      soul2.yLoc = 10;
+    }
+    if (hasCollision(&soul3, &player)) 
+    {
+      soul3.xLoc = soulSpawns[(rand() & 21)]; 
+      soul3.yLoc = 10;
+    }
+    if (hasCollision(&soul4, &player)) 
+    {
+      soul4.xLoc = soulSpawns[(rand() & 21)]; 
+      soul4.yLoc = 10;
+    }
+    if (hasCollision(&soul5, &player)) 
+    {
+      soul5.xLoc = soulSpawns[(rand() & 21)]; 
+      soul5.yLoc = 10;
+    }
 
     // handle soul1 movement
     if (soul1.yLoc > 160) 
