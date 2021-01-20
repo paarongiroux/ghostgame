@@ -16,6 +16,7 @@ extern const UINT8 PLAYER_WIDTH;
 extern const UINT8 PLAYER_HEIGHT;
 extern const UINT8 SOUL_WIDTH;
 extern const UINT8 SOUL_HEIGHT;
+extern const UINT8 PLAYER_SPEED;
 
 typedef enum
 {

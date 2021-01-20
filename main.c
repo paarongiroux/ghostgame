@@ -155,12 +155,13 @@ void main()
 	// case: Left D-Pad ================
     if (joypad() & J_LEFT)
     {
-      scroll_sprite(0,-5,0);
-      player.xLoc -= 5;
-      if (player.xLoc <= 2) 
+      scroll_sprite(0,(-1 * PLAYER_SPEED),0);
+      player.xLoc -= PLAYER_SPEED;
+      if ((int) player.xLoc <= 2 && (int) player.xLoc > -90) 
       {
         player.xLoc = -90;
       }
+
 	  // set movement flag, handle sprite animation.
       player.isMoving = True;
       set_sprite_tile(0, player.numberSprites - currentSpriteIndex);
@@ -176,8 +177,8 @@ void main()
 	// case: Right D-Pad ================
     if (joypad() & J_RIGHT)
     {
-      scroll_sprite(0,5,0);
-      player.xLoc += 5;
+      scroll_sprite(0,PLAYER_SPEED,0);
+      player.xLoc += PLAYER_SPEED;
 
       // ran off left edge of screen.
       if (player.xLoc >= 168)
