@@ -11,10 +11,17 @@
 #include <stdlib.h>
 #include <rand.h>
 
+void runGame();
 
 void main()
 {
+  while (True) {
+    runGame();
+  }
+  
+}
 
+void runGame() {
   // stores all data associated with the player
   Entity player = {
 	  PLAYER_X_START,	// xLoc
@@ -85,6 +92,8 @@ void main()
   UINT8 soulsCollected = 0;
 
   // sets initial background splash screen.
+  // this causes problems. need a new splash screen that has <128 tiles
+  // this one has 189.
   set_bkg_data(0, 189, GhostsSplash_data);
   set_bkg_tiles(1, 0, 18, 18, GhostsSplash_map);
 
@@ -407,5 +416,12 @@ void main()
     if (soulInitCounter <= 60) {
       soulInitCounter++;
     }
+
+    if (gameOver) {
+      break;
+    }
   }
+  HIDE_SPRITES;
+  set_bkg_data(0, 189, GhostsSplash_data);
+  set_bkg_tiles(1, 0, 18, 18, GhostsSplash_map);
 }
