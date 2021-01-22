@@ -56,7 +56,9 @@ void performantdelay(UINT8 numloops);
 
 void playJumpSound();
 
-void playFireSound();
+// void playFireSound();
+
+void playCollectSound();
 
 Boolean hasCollision(Soul *soul, Entity *ent);
 

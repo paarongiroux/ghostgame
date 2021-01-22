@@ -35,13 +35,13 @@ void runGame() {
 	  True				// inAir
   };
 
-  // stores all data associated with the player's projectile
-  Projectile projectile = {
-	  player.xLoc,		// xLoc
-	  player.yLoc,		// yLoc
-	  player.facingRight,//facingRight
-	  4					// numberSprites
-  };
+  // // stores all data associated with the player's projectile
+  // Projectile projectile = {
+	//   player.xLoc,		// xLoc
+	//   player.yLoc,		// yLoc
+	//   player.facingRight,//facingRight
+	//   4					// numberSprites
+  // };
 
   // possible xLocations for the souls to spawn
   UINT8 soulSpawns[22] = {
@@ -116,8 +116,8 @@ void runGame() {
 
   // set sprite 0 to PLAYER_SPRITES index.
   set_sprite_tile(0,PLAYER_SPRITES);
-  // set sprite 1 to PROJECTILE_SPRITES index.
-  set_sprite_tile(1,PROJECTILE_SPRITES);
+  // // set sprite 1 to PROJECTILE_SPRITES index.
+  // set_sprite_tile(1,PROJECTILE_SPRITES);
 
   // SPRITES 2-6 are soul sprites
   // set sprite 2 to PLAYER_SPRITES index.
@@ -134,7 +134,7 @@ void runGame() {
 
   // moe sprites to their starting locations, show sprites.
   move_sprite(0,player.xLoc, player.yLoc);
-  move_sprite(1,projectile.xLoc, projectile.yLoc);
+  // move_sprite(1,projectile.xLoc, projectile.yLoc);
 
   // move soul sprites to their starting locations.
   move_sprite(2, soul1.xLoc, soul1.yLoc);
@@ -245,16 +245,16 @@ void runGame() {
       }
     }
 
-	// case: A button (projectile) ====================
-	if (joypad() & J_A)
-	{
-    playFireSound();
-	  // move projectile sprite to the players location & direction.
-	  move_sprite(1, player.xLoc, player.yLoc);
-	  projectile.xLoc = player.xLoc;
-	  projectile.yLoc = player.yLoc;
-	  projectile.facingRight = player.facingRight;
-	}
+	// // case: A button (projectile) ====================
+	// if (joypad() & J_A)
+	// {
+  //   playFireSound();
+	//   // move projectile sprite to the players location & direction.
+	//   move_sprite(1, player.xLoc, player.yLoc);
+	//   projectile.xLoc = player.xLoc;
+	//   projectile.yLoc = player.yLoc;
+	//   projectile.facingRight = player.facingRight;
+	// }
 
     // calculate projected y.
     projy = player.yLoc + player.ySpeed;
@@ -283,24 +283,24 @@ void runGame() {
       set_sprite_tile(0, currentSpriteIndex);
     }
 
-    // if projectile is on screen, keep scrolling.
-    if ((projectile.facingRight && projectile.xLoc < 200) || (!projectile.facingRight && projectile.xLoc > 0))
-    {
-	  // handle sprite animation
-      set_sprite_tile(1, projectile.numberSprites + currentSpriteIndex);
-	  // if projectile is facing right, keep scrolling to the right
-      if (projectile.facingRight)
-      {
-        scroll_sprite(1, PROJECTILE_SPEED, 0);
-        projectile.xLoc += PROJECTILE_SPEED;
-      }
-	  // otherwise, keep scrolling to the left
-      else
-      {
-        scroll_sprite(1 ,-1 * PROJECTILE_SPEED, 0);
-        projectile.xLoc -= PROJECTILE_SPEED;
-      }
-    }
+    // // if projectile is on screen, keep scrolling.
+    // if ((projectile.facingRight && projectile.xLoc < 200) || (!projectile.facingRight && projectile.xLoc > 0))
+    // {
+	  // // handle sprite animation
+    //   set_sprite_tile(1, projectile.numberSprites + currentSpriteIndex);
+	  // // if projectile is facing right, keep scrolling to the right
+    //   if (projectile.facingRight)
+    //   {
+    //     scroll_sprite(1, PROJECTILE_SPEED, 0);
+    //     projectile.xLoc += PROJECTILE_SPEED;
+    //   }
+	  // // otherwise, keep scrolling to the left
+    //   else
+    //   {
+    //     scroll_sprite(1 ,-1 * PROJECTILE_SPEED, 0);
+    //     projectile.xLoc -= PROJECTILE_SPEED;
+    //   }
+    // }
 
 	// handle spritecount1. If greater than four: reset & flip spriteIndex.
     if (spritecount1 > 4)
@@ -321,26 +321,31 @@ void runGame() {
     {
       soul1.xLoc = soulSpawns[(rand() & 21)]; 
       soul1.yLoc = 10;
+      playCollectSound();
     }
     if (hasCollision(&soul2, &player)) 
     {
       soul2.xLoc = soulSpawns[(rand() & 21)]; 
       soul2.yLoc = 10;
+      playCollectSound();
     }
     if (hasCollision(&soul3, &player)) 
     {
       soul3.xLoc = soulSpawns[(rand() & 21)]; 
       soul3.yLoc = 10;
+      playCollectSound();
     }
     if (hasCollision(&soul4, &player)) 
     {
       soul4.xLoc = soulSpawns[(rand() & 21)]; 
       soul4.yLoc = 10;
+      playCollectSound();
     }
     if (hasCollision(&soul5, &player)) 
     {
       soul5.xLoc = soulSpawns[(rand() & 21)]; 
       soul5.yLoc = 10;
+      playCollectSound();
     }
 
     // handle soul1 movement

@@ -33,10 +33,20 @@ void playJumpSound()
     NR14_REG = 0xC3;
 }
 
-void playFireSound()
+// void playFireSound()
+// {
+//     NR10_REG = 0x34U;
+//     NR11_REG = 0x70U;
+//     NR12_REG = 0xF0U;
+//     NR13_REG = 0x0AU;
+//     NR14_REG = 0xC6U;
+//     NR51_REG = 0x11;
+// }
+
+void playCollectSound()
 {
     NR10_REG = 0x34U;
-    NR11_REG = 0x70U;
+    NR11_REG = 0x80U;
     NR12_REG = 0xF0U;
     NR13_REG = 0x0AU;
     NR14_REG = 0xC6U;
