@@ -108,11 +108,11 @@ void runGame() {
   set_bkg_data(0, 19, bgtiles);
 
   // sets background map data from backgroundmap label.
-  set_bkg_tiles(0, 0, 80, 26, backgroundmap);
+  set_bkg_tiles(0, 0, 20, 18, backgroundmap);
 
   // loads sprite data, sets tiles for sprite 0 and 1.
   // puts sprites 0 and 1 on screen.
-  set_sprite_data(0,7,Sprites);
+  set_sprite_data(0,8,Sprites);
 
   // set sprite 0 to PLAYER_SPRITES index.
   set_sprite_tile(0,PLAYER_SPRITES);
@@ -121,15 +121,15 @@ void runGame() {
 
   // SPRITES 2-6 are soul sprites
   // set sprite 2 to PLAYER_SPRITES index.
-  set_sprite_tile(2,PLAYER_SPRITES);
+  set_sprite_tile(2,SOUL_SPRITES);
   // set sprite 3 to PLAYER_SPRITES index.
-  set_sprite_tile(3,PLAYER_SPRITES);
+  set_sprite_tile(3,SOUL_SPRITES);
   // set sprite 4 to PLAYER_SPRITES index.
-  set_sprite_tile(4,PLAYER_SPRITES);
+  set_sprite_tile(4,SOUL_SPRITES);
   // set sprite 5 to PLAYER_SPRITES index.
-  set_sprite_tile(5,PLAYER_SPRITES);
+  set_sprite_tile(5,SOUL_SPRITES);
   // set sprite 6 to PLAYER_SPRITES index.
-  set_sprite_tile(6,PLAYER_SPRITES);
+  set_sprite_tile(6,SOUL_SPRITES);
   
 
   // moe sprites to their starting locations, show sprites.

@@ -7,6 +7,7 @@ extern const UINT8 PLAYER_Y_START;
 extern const UINT8 PLAYER_SPRITES;
 extern const UINT8 PROJECTILE_SPRITES;
 extern const UINT8 CROUCHING_SPRITE;
+extern const UINT8 SOUL_SPRITES;
 extern const UINT8 GLOBAL_FLOOR;
 extern const UINT8 PROJECTILE_SPEED;
 extern const UINT8 JUMP_SPEED;
