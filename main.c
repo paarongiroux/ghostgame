@@ -7,6 +7,8 @@
 #include <structs.c>
 #include <GhostsSplash_data.c>
 #include <GhostsSplash_map.c>
+#include <insides_data.c>
+#include <insides_map.c>
 #include <stdio.h>
 #include <stdlib.h>
 #include <rand.h>
@@ -15,7 +17,19 @@ void runGame();
 
 void main()
 {
+  // draw intro screen
+  // sets initial background splash screen.
+  set_bkg_data(0, 40, insides_data);
+  set_bkg_tiles(0, 0, 20, 18, insides_map);
+
+  // show background, set display to on.
+  SHOW_BKG;
+  DISPLAY_ON;
+  delay(2500);
+  HIDE_BKG;
+  DISPLAY_OFF;
   while (True) {
+    
     runGame();
   }
   
@@ -91,11 +105,11 @@ void runGame() {
   // tracks the number of souls collected by the player.
   UINT8 soulsCollected = 0;
 
+  HIDE_BKG;
+  DISPLAY_OFF;
   // sets initial background splash screen.
-  // this causes problems. need a new splash screen that has <128 tiles
-  // this one has 189.
-  set_bkg_data(0, 189, GhostsSplash_data);
-  set_bkg_tiles(1, 0, 18, 18, GhostsSplash_map);
+  set_bkg_data(0, 100, GhostsSplash_data);
+  set_bkg_tiles(0, 0, 20, 18, GhostsSplash_map);
 
   // show background, set display to on.
   SHOW_BKG;
@@ -210,12 +224,12 @@ void runGame() {
 	// case: Up D-Pad ================
     if (joypad() & J_UP)
     {
-	  // if player is not in the air, pressing up will give a small bounce
-	  if (!player.inAir)
-	  {
-      scroll_sprite(0,0,-3);
-      player.yLoc -= 3;
-	  }
+      // if player is not in the air, pressing up will give a small bounce
+      if (!player.inAir)
+      {
+        scroll_sprite(0,0,-3);
+        player.yLoc -= 3;
+      }
     }
 	// case: Down D-Pad ================
     if (joypad() & J_DOWN)
@@ -427,6 +441,10 @@ void runGame() {
     }
   }
   HIDE_SPRITES;
-  set_bkg_data(0, 189, GhostsSplash_data);
-  set_bkg_tiles(1, 0, 18, 18, GhostsSplash_map);
+  HIDE_BKG;
+  DISPLAY_OFF;
+  set_bkg_data(0, 100, GhostsSplash_data);
+  set_bkg_tiles(0, 0, 20, 18, GhostsSplash_map);
+  SHOW_BKG;
+  DISPLAY_ON;
 }

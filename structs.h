@@ -63,4 +63,7 @@ void playCollectSound();
 
 Boolean hasCollision(Soul *soul, Entity *ent);
 
+// void fadeout();
+// void fadein();
+
 #endif
