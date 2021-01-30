@@ -7,6 +7,7 @@
 #include <structs.c>
 #include <GhostsSplash_data.c>
 #include <GhostsSplash_map.c>
+#include <font.c>
 #include <insides_data.c>
 #include <insides_map.c>
 #include <stdio.h>
@@ -14,6 +15,12 @@
 #include <rand.h>
 
 void runGame();
+void drawscore(UINT16 score);
+
+const unsigned char blankmap[1] =
+{
+	0x00
+};
 
 void main()
 {
@@ -21,6 +28,8 @@ void main()
   // sets initial background splash screen.
   set_bkg_data(0, 40, insides_data);
   set_bkg_tiles(0, 0, 20, 18, insides_map);
+ 
+  
 
   // show background, set display to on.
   SHOW_BKG;
@@ -103,7 +112,10 @@ void runGame() {
   UINT8 soulInitCounter = 0;
 
   // tracks the number of souls collected by the player.
-  UINT8 soulsCollected = 0;
+  UINT16 soulsCollected = 0;
+
+  UINT8 i = 0;
+  UINT8 j = 0;
 
   HIDE_BKG;
   DISPLAY_OFF;
@@ -164,11 +176,20 @@ void runGame() {
   NR50_REG = 0x77;
   NR51_REG = 0xFF;
 
+  set_win_data(19,36,Font);
+  // write a clear sprite to every window block
+	// write a clear sprite to every background block
+	for (j=0 ; j <= 32 ; j++){
+		for (i=0 ; i <= 32 ; i++){		
+			set_win_tiles(i,j,1,1,blankmap);
+		}
+	}
+	move_bkg(0,3);
+	move_win(1,136);
+  drawscore(soulsCollected);
+  SHOW_WIN;
 
-  // for (soulIndex = 0; soulIndex < NUM_SOULS; soulIndex++)
-  // {
-  //   int x = soulIndex;
-  // }
+  
 
 
   // MAIN GAME LOOP ===========================================================
@@ -297,25 +318,6 @@ void runGame() {
       set_sprite_tile(0, currentSpriteIndex);
     }
 
-    // // if projectile is on screen, keep scrolling.
-    // if ((projectile.facingRight && projectile.xLoc < 200) || (!projectile.facingRight && projectile.xLoc > 0))
-    // {
-	  // // handle sprite animation
-    //   set_sprite_tile(1, projectile.numberSprites + currentSpriteIndex);
-	  // // if projectile is facing right, keep scrolling to the right
-    //   if (projectile.facingRight)
-    //   {
-    //     scroll_sprite(1, PROJECTILE_SPEED, 0);
-    //     projectile.xLoc += PROJECTILE_SPEED;
-    //   }
-	  // // otherwise, keep scrolling to the left
-    //   else
-    //   {
-    //     scroll_sprite(1 ,-1 * PROJECTILE_SPEED, 0);
-    //     projectile.xLoc -= PROJECTILE_SPEED;
-    //   }
-    // }
-
 	// handle spritecount1. If greater than four: reset & flip spriteIndex.
     if (spritecount1 > 4)
     {
@@ -336,30 +338,40 @@ void runGame() {
       soul1.xLoc = soulSpawns[(rand() & 21)]; 
       soul1.yLoc = 10;
       playCollectSound();
+      soulsCollected ++;
+      drawscore(soulsCollected);
     }
     if (hasCollision(&soul2, &player)) 
     {
       soul2.xLoc = soulSpawns[(rand() & 21)]; 
       soul2.yLoc = 10;
       playCollectSound();
+      soulsCollected ++;
+      drawscore(soulsCollected);
     }
     if (hasCollision(&soul3, &player)) 
     {
       soul3.xLoc = soulSpawns[(rand() & 21)]; 
       soul3.yLoc = 10;
       playCollectSound();
+      soulsCollected ++;
+      drawscore(soulsCollected);
     }
     if (hasCollision(&soul4, &player)) 
     {
       soul4.xLoc = soulSpawns[(rand() & 21)]; 
       soul4.yLoc = 10;
       playCollectSound();
+      soulsCollected ++;
+      drawscore(soulsCollected);
     }
     if (hasCollision(&soul5, &player)) 
     {
       soul5.xLoc = soulSpawns[(rand() & 21)]; 
       soul5.yLoc = 10;
       playCollectSound();
+      soulsCollected ++;
+      drawscore(soulsCollected);
     }
 
     // handle soul1 movement
@@ -442,9 +454,24 @@ void runGame() {
   }
   HIDE_SPRITES;
   HIDE_BKG;
+  HIDE_WIN;
   DISPLAY_OFF;
   set_bkg_data(0, 100, GhostsSplash_data);
   set_bkg_tiles(0, 0, 20, 18, GhostsSplash_map);
   SHOW_BKG;
   DISPLAY_ON;
+}
+
+// TODO
+void drawscore(UINT16 score){
+	UINT8 digitmap[1];
+	INT8 numdigitsdrawn = 0;
+
+	while (score != 0) {
+		digitmap[0] = score % 10 + 20;
+		// draw next lowest digit
+		set_win_tiles(19 - numdigitsdrawn, 0, 1, 1, digitmap);
+		numdigitsdrawn++;
+		score = score/10;
+	}
 }
