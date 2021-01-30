@@ -38,14 +38,6 @@ typedef struct
 	Boolean inAir;
 } Entity;
 
-typedef struct
-{
-	UINT8 xLoc;
-	UINT8 yLoc;
-	Boolean facingRight;
-	UINT8 numberSprites;
-} Projectile;
-
 typedef struct Soul
 {
 	UINT8 xLoc;
@@ -60,6 +52,8 @@ void playJumpSound();
 // void playFireSound();
 
 void playCollectSound();
+
+void playDeathSound();
 
 Boolean hasCollision(Soul *soul, Entity *ent);
 

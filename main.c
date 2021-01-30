@@ -19,7 +19,7 @@ void drawscore(UINT16 score);
 
 const unsigned char blankmap[1] =
 {
-	0x00
+	0x14
 };
 
 void main()
@@ -184,8 +184,8 @@ void runGame() {
 			set_win_tiles(i,j,1,1,blankmap);
 		}
 	}
-	move_bkg(0,3);
-	move_win(1,136);
+
+	move_win(128,136);
   drawscore(soulsCollected);
   SHOW_WIN;
 
@@ -279,17 +279,6 @@ void runGame() {
         projy = player.yLoc + player.ySpeed;
       }
     }
-
-	// // case: A button (projectile) ====================
-	// if (joypad() & J_A)
-	// {
-  //   playFireSound();
-	//   // move projectile sprite to the players location & direction.
-	//   move_sprite(1, player.xLoc, player.yLoc);
-	//   projectile.xLoc = player.xLoc;
-	//   projectile.yLoc = player.yLoc;
-	//   projectile.facingRight = player.facingRight;
-	// }
 
     // calculate projected y.
     projy = player.yLoc + player.ySpeed;
@@ -449,9 +438,11 @@ void runGame() {
     }
 
     if (gameOver) {
+      playDeathSound();
       break;
     }
   }
+  delay(2500);
   HIDE_SPRITES;
   HIDE_BKG;
   HIDE_WIN;
@@ -470,7 +461,7 @@ void drawscore(UINT16 score){
 	while (score != 0) {
 		digitmap[0] = score % 10 + 20;
 		// draw next lowest digit
-		set_win_tiles(19 - numdigitsdrawn, 0, 1, 1, digitmap);
+		set_win_tiles(4 - numdigitsdrawn, 0, 1, 1, digitmap);
 		numdigitsdrawn++;
 		score = score/10;
 	}

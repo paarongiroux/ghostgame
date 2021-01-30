@@ -34,15 +34,6 @@ void playJumpSound()
     NR14_REG = 0xC3;
 }
 
-// void playFireSound()
-// {
-//     NR10_REG = 0x34U;
-//     NR11_REG = 0x70U;
-//     NR12_REG = 0xF0U;
-//     NR13_REG = 0x0AU;
-//     NR14_REG = 0xC6U;
-//     NR51_REG = 0x11;
-// }
 
 void playCollectSound()
 {
@@ -52,6 +43,15 @@ void playCollectSound()
     NR13_REG = 0x0AU;
     NR14_REG = 0xC6U;
     NR51_REG = 0x11;
+}
+
+void playDeathSound(){
+	//Sound : Game Over sound
+	NR10_REG = 0x7D; //or 1E or 1D for louder sound / 2E / 3E / 4E... for more "vibe"
+	NR11_REG = 0xBF;
+	NR12_REG = 0xF6; //B7, C7, D7...F7 for longer sound
+	NR13_REG = 0x7C;
+	NR14_REG = 0x86;
 }
 
 Boolean hasCollision(Soul *soul, Entity *ent)
