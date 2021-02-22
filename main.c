@@ -265,7 +265,7 @@ void runGame() {
     }
 
 	// case: B button (jump) ================
-    if (joypad() & J_B)
+    if ((joypad() & J_B) || (joypad() & J_A))
     {
 	  // make sure player is not in air (no double jumps)
       if (!player.inAir)
