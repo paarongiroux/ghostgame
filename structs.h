@@ -7,9 +7,17 @@ extern const UINT8 PLAYER_Y_START;
 extern const UINT8 PLAYER_SPRITES;
 extern const UINT8 PROJECTILE_SPRITES;
 extern const UINT8 CROUCHING_SPRITE;
+extern const UINT8 SOUL_SPRITES;
 extern const UINT8 GLOBAL_FLOOR;
 extern const UINT8 PROJECTILE_SPEED;
 extern const UINT8 JUMP_SPEED;
+extern const UINT8 SOUL_DROP_SPEED;
+extern const UINT8 NUM_SOULS;
+extern const UINT8 PLAYER_WIDTH;
+extern const UINT8 PLAYER_HEIGHT;
+extern const UINT8 SOUL_WIDTH;
+extern const UINT8 SOUL_HEIGHT;
+extern const UINT8 PLAYER_SPEED;
 
 typedef enum
 {
@@ -30,18 +38,26 @@ typedef struct
 	Boolean inAir;
 } Entity;
 
-typedef struct
+typedef struct Soul
 {
 	UINT8 xLoc;
 	UINT8 yLoc;
-	Boolean facingRight;
-	UINT8 numberSprites;
-} Projectile;
+} Soul;
+
 
 void performantdelay(UINT8 numloops);
 
 void playJumpSound();
 
-void playFireSound();
+// void playFireSound();
+
+void playCollectSound();
+
+void playDeathSound();
+
+Boolean hasCollision(Soul *soul, Entity *ent);
+
+// void fadeout();
+// void fadein();
 
 #endif
